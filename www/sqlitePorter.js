@@ -90,17 +90,21 @@
                 function applyStatements() {
                     if (statements.length > 0) {
                         var statement = trimWhitespace(statements.shift());
-                        tx.executeSql(statement, [], function(){
-                            currentCount++;
-                            if(opts.progressFn){
-                                opts.progressFn(currentCount, totalCount);
-                            }
-                            applyStatements();
-                        }, function (tx, error) {
-                            error.message = "Failed to import SQL; message="+ error.message;
-                            error.statement = statement;
-                            handleError(error);
-                        });
+                        if(statement == "") {
+                          applyStatements();
+                        } else {
+                            tx.executeSql(statement, [], function(){
+                                currentCount++;
+                                if(opts.progressFn){
+                                    opts.progressFn(currentCount, totalCount);
+                                }
+                                applyStatements();
+                            }, function (tx, error) {
+                                error.message = "Failed to import SQL; message="+ error.message;
+                                error.statement = statement;
+                                handleError(error);
+                            });
+                        }
                     } else if(opts.successFn){
                         opts.successFn(totalCount);
                     }
