@@ -603,7 +603,7 @@
      * @returns {string} trimmed string
      */
     function trimWhitespace(str){
-        return str.replace(/^\s+/,"").replace(/\s+$/,"");
+        return typeof str == "string" ? str.replace(/^\s+/,"").replace(/\s+$/,"") : str;
     }
 
     /**
